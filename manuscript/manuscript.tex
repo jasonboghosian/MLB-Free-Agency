@@ -1,0 +1,376 @@
+\documentclass[10pt]{article}
+\usepackage[explicit]{titlesec}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\usepackage{hyphenat}
+\usepackage{ragged2e}
+\RaggedRight
+
+\usepackage{garamondx}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\newcommand{\jy}[1]{\textcolor{orange}{JY: (#1)}}
+\usepackage{booktabs}
+
+\usepackage{soul}
+\setul{.6pt}{.4pt}
+
+\usepackage{geometry}
+\geometry{vmargin={1in,1in}, hmargin={.75in, .75in}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\pagenumbering{gobble}
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+
+\usepackage[labelfont={footnotesize,bf} , textfont=footnotesize]{caption}
+\captionsetup{labelformat=simple, labelsep=period}
+\newcommand\num{\addtocounter{equation}{1}\tag{\theequation}}
+\renewcommand{\theequation}{\arabic{equation}}
+\makeatletter
+\renewcommand\tagform@[1]{\maketag@@@ {\ignorespaces {\footnotesize{\textbf{Equation}}} #1.\unskip \@@italiccorr }}
+\makeatother
+\setlength{\intextsep}{10pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-10pt}
+
+\renewcommand{\textfraction}{0.10}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\floatpagefraction}{0.90}
+
+\titleformat{\section}
+  {\normalfont}{\thesection}{1em}{\MakeUppercase{\textbf{#1}}}
+\titlespacing\section{0pt}{0pt}{-10pt}
+\titleformat{\subsection}
+  {\normalfont}{\thesubsection}{1em}{\textit{#1}}
+\titlespacing\subsection{0pt}{0pt}{-8pt}
+\renewcommand{\baselinestretch}{1.15}
+
+\makeatletter
+\newcommand\sixteen{\@setfontsize\sixteen{17pt}{6}}
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt}
+\begin{flushleft}
+\sixteen\bfseries \@title
+\medskip
+\end{flushleft}
+\textit{\@author}
+\egroup}
+\makeatother
+
+%\usepackage[biblabel]{cite}
+\usepackage[sort&compress]{natbib}
+\setlength\bibindent{2em}
+\makeatletter
+\renewcommand\@biblabel[1]{\textbf{#1.}\hfill}
+\makeatother
+\renewcommand{\citenumfont}[1]{\textbf{#1}}
+\bibpunct{}{}{,~}{s}{,}{,}
+\setlength{\bibsep}{0pt plus 0.3ex}
+
+\usepackage{float}
+
+\title{Free Agency in Baseball: MLB Teams Aren’t Getting The Player They Bargained For}
+\author{Jason Boghosian\\
+  Department of Statistics\\
+  University of Connecticut
+}
+
+\begin{document}
+\maketitle
+
+\section*{Abstract}
+Every winter, professional baseball teams bid for the services of the MLB’s most talented hitters. Baseball’s top stars often 
+sign contracts for upwards of half a decade, guaranteeing them tens, if not hundreds of millions of dollars. However, some of 
+these contracts work out better than others. When teams shell out inordinate amounts of money, they are gambling on their
+investment panning out; when it doesn’t, the consequences can be drastic. The conventional wisdom in baseball states that
+players who sign contracts with new teams tend to underperform expectations in their new city. Mostly supported by anecdotal 
+and circumstantial evidence, this theory can be scientifically put to the test. By comparing player performance from 2021 to
+2022 for players that switched baseball clubs this past winter, we can either support or contradict this long-repeated 
+conjecture. In this paper we will explore the differences from year to year in numerous key baseball statistics. For each
+significant statistical finding, practical explanations will be offered based on existing literature and practical causal 
+arguments.
+
+\section*{Keywords}
+Baseball Contracts; Baseball Statistics; Free Agency; Injuries; Player Decline; Player Durability; Player Performance
+
+\section{Introduction}
+On May 5th, 2022, Boston Red Sox second baseman Trevor Story walked back to the dugout after a strikeout, his fourth such 
+result of the night. Boos rained down on him from Red Sox fans who had, to this point, watched their beloved team muster zero 
+runs through seven innings. Story had made his Red Sox debut just 27 days ago after signing a six year, 140 million dollar 
+contract over the winter with Boston. How did the multimillion dollar experiment go sideways so quickly?
+
+Fans of major league baseball have heard a version of this story many times before. A player destined for stardom seeks a 
+change of scenery, and then finds themself struggling to meet expectations in their new city. Particularly in the 2022 MLB 
+season, fans of several teams found themselves wildly disappointed with shiny new acquisitions that they were positive would 
+generate elite output. However, these negative sentiments gave me pause. Sports fans are among the most emotionally fraught 
+and reactive individuals that I can think of. Red Sox fans had written off the 29-year old Story before he had even spent a 
+full month playing with his new club. I figured that there had to be a statistical method to test whether these fans’ gripes 
+had some merit or whether they were merely the reactionary groans of disillusioned and bitter sports fans. Consequently, it 
+is that question which I seek to answer with the methods presented in this paper. 
+
+Author John Cassidy briefly explored a version of this phenomenon in his book entitled How Markets Fail, an economics book with 
+an added statistical and mathematical flair. In Chapter 12, he references a study done by Kenneth Lehn, a financial economist 
+at the Washington University School of Business. He found that output dropped among players who switched teams, with the main 
+culprit being health. Players who moved spent, on average, nearly eight more days on the disabled list than players who re-upped 
+their contracts with their existing team. His theory was that ball clubs seeking to poach players from other teams suffered from 
+a key handicap- they had vastly less information about said players than did the existing teams of the players. I’ll explore 
+this angle later on, but Cassidy and Lehn provided a strong introductory look into the matter. 
+
+Stephen M. Garcia et al. explored the many intricacies of baseball free agency in a 2020 economic journal. They found an 
+increasing unwillingness for high-ranking teams to pursue high-profile free agent players. Teams seem to have soured on the 
+idea of the splashy, big-money winter acquisitions. Haunted by memories of major flops from years past, more teams are looking 
+for production from their young and developing homegrown talents rather than outside, expensive, established talent. Another 
+trend they found is that when other teams bid for the services of their players, teams are becoming less likely to provide a 
+counter-offer that would retain that player. Teams becoming more willing to part with their players aligns with the hypothesis 
+that a player’s existing team knows more about them than any other team does. A player’s true state of fitness is technically 
+hidden information- the consequences of nagging injuries often don’t present themselves until a player ages, long after a team 
+has already taken a gamble on them.
+
+Baseball teams shell out billions of dollars (3.2 billion total in 2022) in guaranteed money every winter in their quests to 
+hoist the World Series trophy. It’s a high-stakes gambling game that produces more losers than winners, and can either save or 
+cost people their jobs. The contribution of this paper is a more advanced look into what Cassidy and Lehn contributed. The rest 
+of the paper is organized as follows. I will first lay out the source of my data and how it was cleaned and organized. I will 
+then describe and justify the methods I used to compare player performance across the selected years. There will then be a 
+reporting of all output tables, a walkthrough of all statistical computations, and finally in-depth analysis of my findings 
+and what they may mean for the sport at large. 
+
+\section{Data}
+The data that has been collected for this study came mainly from Baseball Reference and Spotrac, two websites that contain 
+nearly every morsel of baseball data one could desire. Baseball Reference mostly provided the true statistics and game-by-game 
+breakdowns, while Spotrac mainly provided contract and free agency information. 
+
+To begin, I had to decide who, or what, to sample. Because we are comparing 2021 statistics to 2022 statistics, I had to look 
+at only players who switched teams in free agency between those two seasons. For the sake of consistency, we will refer to the 
+period between the 2021 and 2022 seasons as the “2022 offseason”. There were 64 batters who were free agents during the 2022 
+offseason. Of those 64, precisely 50 signed major-league contracts with a team that was different from the team they were on 
+at the end of the 2021 season. Spotrac lists six other players who technically switched teams, however these players did not 
+switch teams until after the commencement of the 2022 season, making them ineligible for this study.
+
+Once I had my sample of 50 players, I had to then choose which statistics I was going to use to measure player performance. 
+The first group of statistics I analyzed we will refer to as “counting statistics”. These statistics are simple: they merely 
+count the number of events of interest that occur in a player’s season. Runs (R) refers to the number of times a player touched 
+home plate and scored a run for their team. Hits (H) refers to the number of times a player hit the ball into fair territory 
+and reached base without a defensive error. Doubles (2B) refers to the number of hits that resulted in the batter reaching 
+second base. Triples (3B) refers to the number of hits that resulted in the batter reaching third base. Home runs (HR) refers 
+to the number of times a player hit a ball over the home run fence in fair territory, awarding them all four bases. Runs batted 
+in (RBI) refers to the number of runs that scored as a direct result of the player being up to bat. Stolen bases (SB) refers 
+to the number of times a player was on base and advanced by taking a base when they weren’t entitled to it. Finally, total 
+bases (TB) refers to the number of bases gained by a batter as a direct result of their hitting.
+
+The next kind of statistic is referred to as a “value added statistic”. These statistics are technically counting statistics, 
+however they measure a player’s added value above a hypothetical league-average player. Wins above replacement (WAR) measures 
+a player's value by deciphering how many more wins they’re worth than a replacement-level player at their same position. Runs 
+above replacement (RAR) measures a player’s value by deciphering how many more runs they’re worth than a replacement-level 
+player at their same position.
+
+The next two statistics are still technically counting statistics, but I portioned them off because they contribute to a 
+different narrative than do the rest of the counting statistics. They will be referred to as “health statistics”. Games (GM) 
+refers to the number of games a player appeared in. Days on the injured list (IL) refers to the number of days a player spent 
+on either the 10-day, 15-day or 60-day injured list. When a player is on the injured list, they are ineligible to play due to 
+injury.
+
+The final group of statistics can be referred to as proportion statistics. These statistics are the only ones used in this 
+study that can rise and fall, and are not dependent on the amount of game participation. For example, a player that plays 150 
+games has a much better chance of having more hits than a player who plays 50 games. The following statistics do not follow 
+the same rule. Batting average (AVG.) is the proportion of at bats that result in a hit for the player. Slugging percentage 
+(SLG.) is calculated by dividing total bases by the number of at bats. Home run percentage (HR%) is the proportion of a 
+player’s plate appearances that result in a home run. Walk percentage (BB%) is the proportion of a player’s  plate appearances 
+that result in a walk. Strikeout percentage (SO%) is the proportion of a player’s plate appearances that result in a strikeout. 
+Finally, stolen base percentage (SB%) is the proportion of a player’s attempts to steal a base that are successful. 
+
+All of the aforementioned statistics are extremely common in baseball data discourse. If the goal of the study is to measure 
+player performance, these are the best parameters to use. When a player is at bat, the television broadcast of the game will 
+display several key statistics, all of which are included in the study: batting average, home runs, and runs batted in. The 
+chosen data will help answer the research question by providing a multifaceted look at all aspects of a player’s offensive 
+game. Contact, power, speed, and discipline are all measured in at least one of the given variables.
+
+\section{Methods}
+The basic statistical mechanism used in this study was analysis of variance. By utilizing a one-way ANOVA, I was able to 
+compare means for all of the aforementioned variables from 2021 to 2022. The one-way ANOVA assumes that the data follows a 
+normal distribution, which is an acceptable approximation given the large sample size of players. Each counting statistic, 
+value added statistic, and health statistic was run through this one-way analysis of variance test. For each of these 
+statistics, the null and research hypotheses followed the same general form. The null hypothesis was that the mean value 
+among all 50 players for these statistics in 2021 was equal to the mean value among the same 50 players in 2022. This 
+hypothesis is the one we seek to reject, thus we need a research hypothesis that has the burden of proof. We must be able 
+to measure the strength of the research hypothesis via our P-value. Therefore, our research (alternate) hypothesis is as 
+follows. The mean value among all 50 players for these statistics in 2021 was not equal to the mean value among the same 50 
+players in 2022. We are seeking to uncover whether there was significant change in player performance between the two years, 
+so these hypotheses will suffice. 
+
+The statistical method changes slightly when analyzing the proportion statistics. Means are not very useful when comparing 
+these kinds of statistics. For example, if Player 1 gets 10 hits in 20 tries (a .500 batting average) and Player 2 gets 0 hits 
+in 5 tries (a .000 batting average), the mean of their batting averages will be .250. However, if you pool their attempts, 
+which gives Player 1 additional weight due to the larger sample, they have a combined 10 hits in 25 tries, for a batting 
+average of .400. This .400 figure is much more accurate than the .250 figure, because it creates a weighted mean that gives 
+each player a weight that is directly proportional to their number of attempts. The same tactic was applied to our proportion 
+statistics. For these figures, I created a pooled number that used totals for the necessary variables rather than calculating 
+a proportion statistic for each individual player. With the unweighted method, the mean batting average for our players in 2021 
+was .237. This number is arrived at by adding together all 50 batting averages and dividing by 50. However, as we have 
+established, this is a foolhardy strategy. Instead, I divided the total number of hits by our players in 2021 (4391) by the 
+total number of times they were at bat in 2021 (17,591) to arrive at a more accurate weighted average of nearly .250. It would 
+make sense that this number is higher than the original .237 because players that get hits more frequently are also more likely 
+to have more at bats. 
+
+Once I calculated these pooled proportions, I utilized a 2-sample Z test for difference between proportions. The null 
+hypothesis is only slightly changed from before. In this case, the null hypothesis is that there is no significant difference 
+between the proportion from 2021 and the proportion from 2022. Our research hypothesis, again with the burden of proof, would 
+then be that there is, in fact, a significant difference between the proportion from 2021 and the proportion from 2022. We can 
+apply these hypotheses to all of the proportion statistics to seek out significant differences.
+
+\section{Simulation and Application}
+The following tables contain the results of the one-way analysis of variance for our counting statistics. The first column 
+describes what the statistic is that is being tested. The second column contains the average number of that statistic that 
+the 50 players recorded during the 2021 season. The third column contains the average number of that statistic that the 50 
+players recorded during the 2022 season. The fourth column contains the raw increase or decrease in that statistic from 2021 
+to 2022. The fifth column contains the percentage increase or decrease in that statistic from 2021 to 2022. The sixth column 
+contains the P-value for difference in the two means as calculated by SAS 9.4. The final column contains the significance 
+marking for the statistic. A statistic with one asterisk indicates rejection of the null hypothesis at alpha = 0.10. A 
+statistic with two asterisks indicates rejection of the null hypothesis at alpha = 0.05. A statistic with three asterisks 
+indicates rejection of the null hypothesis at alpha = 0.01.
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Counting Statistics}
+    \label{tab:table1}
+    \begin{tabular}
+      \textbf{Stat} & \textbf{2021} & \textbf{2022} & \textbf{Diff.} & \textbf{PctgChg} & \textbf{P-Value} & \textbf{Signif.}
+      \hline
+      R & 51.34 & 36.94 & -14.4 & -28.05 & 0.0202 & ** \\
+      H & 87.82 & 71.54 & -16.28 & -18.54 & 0.1038 &  \\
+      2B & 16.64 & 13.76 & -2.88 & -17.31 & 0.1686 &  \\
+      3B & 1.38 & 0.92 & -0.46 & -33.33 & 0.1206 &  \\
+      HR & 14.84 & 9.82 & -5.02 & -33.83 & 0.0172 & ** \\
+      RBI & 47.46 & 37.06 & -10.4 & -21.91 & 0.0635 & * \\
+      SB & 5.16 & 3.68 & -1.48 & -28.68 & 0.2769 &  \\
+      TB & 151.74 & 116.6 & -35.14 & -23.16 & 0.0449 & ** \\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+These results on their own do a decent job telling a story. All eight of these statistical categories saw a precipitous drop 
+from 2021 to 2022, with all of them falling over 15% year-over-year. Four of the eight categories contain a rejection of the 
+null hypothesis at alpha = 0.075. Two of the eight, runs and home runs, reject the null hypothesis at alpha = 0.025. However, 
+baseball pundits tend to scoff at analysis that only includes these basic counting statistics. There’s vastly much more to the 
+offensive game, they claim, than just hits and runs.
+
+The pundits aren’t entirely wrong. It is highly likely that a better measure of player performance might be the value added 
+statistics that we mentioned earlier. These statistics take a holistic approach to the game, attempting to summarize the true 
+impact that a player might have on the games they participate in. The next table will contain the results of the analysis of 
+variance for our two value added statistics. The same column headings used in the previous table are used here, with the same 
+functionality. Bear in mind that these statistics are dependent on game participation- they are more likely to increase the 
+more chances a player has- making them still technically counting statistics.
+
+\begin{table}[h!]
+    \begin{center}
+      \caption{Value Added Statistics}
+      \label{tab:table2}
+      \begin{tabular}
+        \textbf{Stat} & \textbf{2021} & \textbf{2022} & \textbf{Diff.} & \textbf{PctgChg} & \textbf{P-Value} & \textbf{Signif.}
+        \hline
+        RAR & 13.96 & 8.02 & -5.94 & -42.55 & 0.1043 &  \\
+        WAR & 1.332 & 0.754 & -0.578 & -43.39 & 0.1191 & \\
+      \end{tabular}
+    \end{center}
+\end{table}
+
+These analyses fall victim to the lofty standards of statistical significance. However, it can still be seen that the same 
+large drops can be seen in these value added statistics. Both categories fell over 40% from 2021 to 2022, even if neither was 
+significant at the level alpha = 0.10. It should be noted, however, that both P-values came extremely close to being significant 
+at that level. While our ANOVA may not have produced any definitive conclusions here, we can still see that our players, on 
+average, added nearly six more runs to their teams in 2021 than in 2022. 
+
+You may be asking: what’s going on with these huge year-over-year changes? After all, the fifty-player sample for 2022 is just 
+the fifty-player sample for 2021 with a mere 365 days of added age. This is where it feels appropriate to mention the theories 
+of John Cassidy and Kenneth Lehn that were mentioned in the introductory section. Are players that switch teams simply less fit 
+to play? Our health statistics are able to gauge if there are significant differences in game participation from one year to 
+the next. The next table will contain the results of the analysis of variance for our two health statistics. The same column 
+headings used in the previous table are used here, with the same functionality. 
+
+\begin{table}[h!]
+    \begin{center}
+      \caption{Health Statistics}
+      \label{tab:table3}
+      \begin{tabular}
+        \textbf{Stat} & \textbf{2021} & \textbf{2022} & \textbf{Diff.} & \textbf{PctgChg} & \textbf{P-Value} & \textbf{Signif.}
+        \hline
+        GM & 110.3 & 86.42 & -23.88 & -21.65 & 0.0069 & *** \\
+        IL & 27.24 & 30.32 & 3.08 & 11.31 & 0.6698 &  \\
+      \end{tabular}
+    \end{center}
+\end{table}
+
+After looking at this table, it seems we may have found our culprit. The difference in game participation between 2021 and 
+2022 for our players, as well as its accompanying P-value is staggering. The null hypothesis is rejected for games played at 
+alpha = 0.01. The drop from 110 games to 86 games is substantial, especially in a season that is only 162 games long. The high 
+P-value for days spent on the injured list is disappointing from a null hypothesis perspective, but we can still learn from 
+this finding. This simply shows that we can’t definitively say that major catastrophic injuries are the reason why player 
+participation dropped so heavily from 2021 to 2022.
+
+While we surely can pull information from these statistical findings, we wouldn’t be doing our due diligence if we didn’t run 
+tests that control for game participation. We’ve established that players who switched teams played vastly less on their new 
+teams, but how did they perform when they actually played? To answer this question, we have to use our proportion statistics. 
+As stated before, these statistics do not necessarily increase with increasing opportunity. Rather, they are moving indicators 
+of how any player is faring in their time on the field, however substantial that time may be.
+
+It is important to note a few things before we change course. These proportion statistics are more prone than counting 
+statistics to anomalies due to insufficient sample size. If you check the leaderboards for these categories just a few weeks 
+into the season, you will see players you’ve never heard of sitting squarely in the top twenty. However, the standard error of 
+these statistical categories is greatly decreased given a large sample size. The central limit theorem states that as the 
+season goes on and sample size increases, the numbers will slowly approach what they are bound to be at by the end of the 
+season. I believe that the hazard of inadequate sample size is prevented by employing the pooled-proportion strategy that was 
+mentioned earlier. With the exception of stolen base percentage, all of these proportions have denominators of over 14,000, 
+which should be more than enough to avoid the pitfalls of potential wayward results and statistical anomalies.
+
+The next table will contain the results of the analysis of variance for our proportion statistics. The column headings here 
+are slightly different from before. The first column describes the statistic of interest. The second column contains the 
+numerator, denominator, and final calculated proportion for that statistic in 2021. The third column contains the numerator, 
+denominator, and final calculated proportion for that statistic in 2022. The fourth column contains the P-value for difference 
+in the two proportions. The final column contains the significance marking for the statistic. A statistic with one asterisk 
+indicates rejection of the null hypothesis at alpha = 0.10. A statistic with two asterisks indicates rejection of the null 
+hypothesis at alpha = 0.05. A statistic with three asterisks indicates rejection of the null hypothesis at alpha = 0.01.
+
+Stat
+2021
+2022
+P-Value
+Signif.
+AVG.
+4391/17591 = .24962
+3577/14557 = .24572
+0.4237
+
+
+SLG.
+7587/17591 = .43130
+5830/14557 = .40049
+<0.0001
+***
+HR%
+742/19853 = 3.737%
+491/16198 = 3.031%
+0.0002
+***
+BB%
+1831/19853 = 9.223%
+1310/16198 = 8.087%
+0.0001
+***
+SO%
+4413/19853 = 22.228%
+3568/16198 = 22.027%
+0.6455
+
+
+SB%
+258/332 = 77.711%
+184/244 = 75.410%
+0.5157
+
+
+
+
+We can see here that, even when adjusting for the fact that our players were playing less in 2022, their performance took a tumble after moving to their new team. There are remarkably low P-values for the differences in slugging percentage, home run percentage, and walk percentage. The difference in the three other statistical categories was not significant at any alpha level below 0.10, but a drop-off in performance can still be seen. The batting average for our players dropped nearly four points year-over-year (the batting average for the entire league only saw a dropoff of less than one point) and our players found slightly less success when trying to steal bases as well.
