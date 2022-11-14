@@ -83,6 +83,7 @@
 \maketitle
 
 \section*{Abstract}
+
 Every winter, professional baseball teams bid for the services of the MLB’s most talented hitters. Baseball’s top stars often 
 sign contracts for upwards of half a decade, guaranteeing them tens, if not hundreds of millions of dollars. However, some of 
 these contracts work out better than others. When teams shell out inordinate amounts of money, they are gambling on their
@@ -95,9 +96,11 @@ significant statistical finding, practical explanations will be offered based on
 arguments.
 
 \section*{Keywords}
+
 Baseball Contracts; Baseball Statistics; Free Agency; Injuries; Player Decline; Player Durability; Player Performance
 
 \section{Introduction}
+
 On May 5th, 2022, Boston Red Sox second baseman Trevor Story walked back to the dugout after a strikeout, his fourth such 
 result of the night. Boos rained down on him from Red Sox fans who had, to this point, watched their beloved team muster zero 
 runs through seven innings. Story had made his Red Sox debut just 27 days ago after signing a six year, 140 million dollar 
@@ -139,6 +142,7 @@ reporting of all output tables, a walkthrough of all statistical computations, a
 and what they may mean for the sport at large. 
 
 \section{Data}
+
 The data that has been collected for this study came mainly from Baseball Reference and Spotrac, two websites that contain 
 nearly every morsel of baseball data one could desire. Baseball Reference mostly provided the true statistics and game-by-game 
 breakdowns, while Spotrac mainly provided contract and free agency information. 
@@ -189,6 +193,7 @@ chosen data will help answer the research question by providing a multifaceted l
 game. Contact, power, speed, and discipline are all measured in at least one of the given variables.
 
 \section{Methods}
+
 The basic statistical mechanism used in this study was analysis of variance. By utilizing a one-way ANOVA, I was able to 
 compare means for all of the aforementioned variables from 2021 to 2022. The one-way ANOVA assumes that the data follows a 
 normal distribution, which is an acceptable approximation given the large sample size of players. Each counting statistic, 
@@ -222,6 +227,7 @@ then be that there is, in fact, a significant difference between the proportion 
 apply these hypotheses to all of the proportion statistics to seek out significant differences.
 
 \section{Simulation and Application}
+
 The following tables contain the results of the one-way analysis of variance for our counting statistics. The first column 
 describes what the statistic is that is being tested. The second column contains the average number of that statistic that 
 the 50 players recorded during the 2021 season. The third column contains the average number of that statistic that the 50 
@@ -333,44 +339,120 @@ in the two proportions. The final column contains the significance marking for t
 indicates rejection of the null hypothesis at alpha = 0.10. A statistic with two asterisks indicates rejection of the null 
 hypothesis at alpha = 0.05. A statistic with three asterisks indicates rejection of the null hypothesis at alpha = 0.01.
 
-Stat
-2021
-2022
-P-Value
-Signif.
-AVG.
-4391/17591 = .24962
-3577/14557 = .24572
-0.4237
+\begin{table}[h!]
+    \begin{center}
+      \caption{Proportion Statistics}
+      \label{tab:table4}
+      \begin{tabular}
+        \textbf{Stat} & \textbf{2021} & \textbf{2022} & \textbf{P-Value} & \textbf{Signif.}
+        \hline
+        AVG. & 4391/17591 = .24962 & 3577/14557 = .24572 & 0.4237 &  \\
+        SLG. & 7587/17591 = .43130 & 5830/14557 = .40049 & <0.0001 & *** \\
+        HR PCT & 742/19853 = 3.737 & 491/16198 = 3.031 & 0.0002 & *** \\
+        BB PCT & 1831/19853 = 9.223 & 1310/16198 = 8.087 & 0.0001 & *** \\
+        SO PCT & 4413/19853 = 22.228 & 3568/16198 = 22.027 & 0.6455 &  \\
+        SB PCT & 258/332 = 77.711 & 184/244 = 75.410 & 0.5157 &  \\
+      \end{tabular}
+    \end{center}
+\end{table}
 
+We can see here that, even when adjusting for the fact that our players were playing less in 2022, their performance took a 
+tumble after moving to their new team. There are remarkably low P-values for the differences in slugging percentage, home run 
+percentage, and walk percentage. The difference in the three other statistical categories was not significant at any alpha 
+level below 0.10, but a drop-off in performance can still be seen. The batting average for our players dropped nearly four 
+points year-over-year (the batting average for the entire league only saw a dropoff of less than one point) and our players 
+found slightly less success when trying to steal bases as well.
 
-SLG.
-7587/17591 = .43130
-5830/14557 = .40049
-<0.0001
-***
-HR%
-742/19853 = 3.737%
-491/16198 = 3.031%
-0.0002
-***
-BB%
-1831/19853 = 9.223%
-1310/16198 = 8.087%
-0.0001
-***
-SO%
-4413/19853 = 22.228%
-3568/16198 = 22.027%
-0.6455
+\section{Discussion}
 
+Our first table showed statistically significant declines in runs, home runs, runs batted in, and total bases. These categories 
+share a sort of commonality in that they are all statistics that rely on a hitter being able to have lots of swing power. Home 
+runs are almost exclusively considered a sign of power, and our players hit, on average, five less home runs in 2022 than they 
+did in 2021. There could be several possible explanations for this finding. A baseball team plays half of its games at its home 
+field; when a player switches teams, they are invariably switching the venue in which they play a large chunk of their games. 
+Ballpark dimensions vary from stadium to stadium, with the fences differing in height, distance from home plate, and angle. A 
+good example of this comes from Trevor Story, one of our 50 sampled players and the one from the anecdote at the beginning of 
+my introduction. Coors Field, his old field in Denver, measures 390 feet from home plate to the center field wall. Fenway Park, 
+his new field in Boston, measures 420 feet to center field- a whopping 30 foot difference. Hitting a baseball 420 feet is a 
+tall task. Players who have played in Boston for years will tell you they never try to hit a ball to center field, lest they 
+waste their power trying to get the ball over one of the farthest walls in the entire league. Conversely, Story, playing his 
+first season in Boston, is likely unfamiliar with the quirks and oddities that come with being a batter in a particular ballpark 
+with unique dimensions. Our sample of 50 players all had to adapt to hitting in a new ballpark, forcing them to restructure 
+their entire approach at the plate. This seismic disruption in their play style would also explain why these players were 
+slightly less valuable in 2022 than in 2021, as shown in our second table. 
 
-SB%
-258/332 = 77.711%
-184/244 = 75.410%
-0.5157
+I would be remiss if I didn’t also mention that in general, moving teams is as massive a change off the field as it is on the 
+field. Anybody who has transplanted themselves into a new city will agree that a massive adjustment period is necessary in 
+order to get one’s feet underneath them in a new environment. Shortstop Andrelton Simmons, one of our sample subjects, made 
+the transition from small-market Minneapolis to the Windy City of Chicago, the third-largest media market in the United States. 
+The aforementioned Story went from Denver, a city over 5,000 feet above sea level, to Boston, which is only a hair over 100 
+feet above sea level. It is not difficult to fathom a potential link between player performance issues and the enormous 
+life-altering decisions that directly precede them. 
 
+Of course, it must be discussed that a sizable portion of the drop-off can be explained by our players’ lack of physical 
+fitness in 2022. As could be seen in our third table, game participation fell by nearly 25 games per player from 2021 to 2022. 
+This difference was deemed empirically significant, and there is a theoretical explanation for this finding as well. Chapter 
+12 of John Cassidy’s book How Markets Fail is entitled “George Akerlof’s Market for Lemons”, wherein he explains that unequal 
+access to information plagues almost every sector of our economy. This includes the market for baseball free agents, which 
+Cassidy explains suffers from the problem of hidden injury information. He posits that “a player’s original team knows more 
+about his health than a potential acquirer, and the decision to release him to free agency may be a sign that it has concerns 
+about his health” (Cassidy 154). This hypothesis is consistent with the previously mentioned studies of Garcia et al. which 
+found that teams are more willing than ever to part with their own players. While the drop in games played doesn’t necessarily 
+reveal a regression in talent or skill, a player needs to be healthy in order to be useful. Our value statistics are tied to 
+game participation because a player that is riding the bench with back problems isn’t valuable at all. Teams are, generally, 
+required to pay players their massive salaries regardless of how healthy they are, making this trend of bad health in newly 
+signed players troubling for big spenders. Teams see big free agency contracts as an investment, and a player can’t provide 
+return on that investment unless they’re truly fit to play. It should also be mentioned the effect that switching organizations 
+might have on a player’s health. Even if there aren’t any nagging hidden issues like the ones Cassidy hypothesized about, a 
+new team means a new training staff and a new set of team doctors. Teams aren’t owed any extensive medical records when they 
+sign a player, so medical staff have very little to work from when treating a newly acquired player.
 
+Arguably the most troubling finding for our players, even more so than their dismal health, was their inability to meet 
+expectations when they were on the field. Our fourth and final table contained statistical categories whose drop-offs could 
+not be explained by not playing as many games in 2022. Every category decreased in some way except for strikeout percentage, 
+with slugging percentage, home run percentage, and walk percentage decreasing significantly. It seems as though between power, 
+contact, speed, and discipline, power is the performance tool that appears to have evaporated the most in our players. The drop 
+in slugging percentage and home run percentage matches up with the drop in other power-related categories from table one. 
+Hitting power is a complicated concept. Gratuitous strength doesn’t always correlate with good power, but it certainly does 
+play a part. Perfect swing form and unimpeachable timing ability are inarguably more important when it comes to launching the 
+baseball- strength means nothing if you cannot get the barrel of the bat on the ball. A baseball swing can be thought of as a 
+symphony of moving body parts. If a batter develops even the slightest hitch in their swing, the entire orchestra is thrown out 
+of balance and the player stands no chance of hitting the ball squarely. These hitches usually develop from, coincidentally, 
+nagging injuries to the back, neck, and extremities. With so many of the players in our sample battling long-term ailments in 
+2022, it is not difficult to see how their power was essentially zapped when compared to the season before. These weeks-long 
+bouts with injury can cause major performance slumps, draining a player’s confidence and setting them up for failure. Baseball 
+is partially a mental game- step up to the plate with a pessimistic mindset, and you’re almost guaranteed to fail. Early-season 
+struggles, especially with a brand-new team, can easily spiral into season-long, emotionally torturous campaigns that leave 
+fans wondering what exactly the team signed up for when they shelled out millions of dollars.
 
+All of this cynicism is not to say that our players can’t turn their fortunes around. The numbers don’t lie: the players in 
+our sample saw a downturn in essentially every single statistical category we decided to investigate. However, we have seen 
+players take their lumps with a new team and persevere. Kyle Schwarber, one of the sampled players, saw one of the largest 
+year-over-year decreases in batting average from 2021 to 2022. But when his Philadelphia Phillies made their improbable run 
+to the World Series this November, Schwarber reversed course and smashed 6 home runs in 17 games, giving Phillies fans hope for 
+a brighter campaign ahead. Baseball is, and will continue to be, an endearingly unpredictable sport. Players that switch teams 
+will likely always have their growing pains, but the fans that stick it out might just be lucky enough to bear the fruit when 
+those players bloom.
 
-We can see here that, even when adjusting for the fact that our players were playing less in 2022, their performance took a tumble after moving to their new team. There are remarkably low P-values for the differences in slugging percentage, home run percentage, and walk percentage. The difference in the three other statistical categories was not significant at any alpha level below 0.10, but a drop-off in performance can still be seen. The batting average for our players dropped nearly four points year-over-year (the batting average for the entire league only saw a dropoff of less than one point) and our players found slightly less success when trying to steal bases as well.
+\bibliographystyle{chicago}
+\bibliography{citations.bib}
+
+\section{Acknowledgements}
+
+Thank you to the University of Connecticut Department of Statistics faculty, and specifically to Dr. Jun Yan, for their 
+contribution to and assistance with the writing of this paper.
+
+\section{About The Student Author}
+
+Jason Boghosian is an expected graduate of the University of Connecticut with a B.A. in Statistics and a minor in both 
+Public Policy and Urban Studies. He will begin his postgraduate studies in August of 2023 when he pursues a Master of Arts 
+in Survey Research at the University of Connecticut.
+
+\section{Press Summary}
+
+The purpose of this study was to examine the effects that switching teams had on professional baseball players in 2022. The 
+hope was to investigate whether there were statistical grounds for the claim that players who change organizations generally 
+perform worse on their new team. This study focused on the difference from 2021 to 2022 in 18 statistical categories for 50 
+sampled MLB players that switched teams between the two seasons. After running statistical tests, the implication of the 
+findings was that players’ fitness level, health, and overall hitting performance appeared to drastically regress after 
+switching teams.
